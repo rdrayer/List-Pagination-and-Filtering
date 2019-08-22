@@ -16,8 +16,8 @@ FSJS project 2 - List Filter and Pagination
    will only be used inside of a function, then it can be locally
    scoped to that function.
 ***/
-const studentList = document.querySelector('li');
-//console.log(studentList);
+const studentList = document.querySelectorAll('li');
+console.log(studentList);
 const itemsPerPage = 10;
 
 
@@ -43,14 +43,21 @@ item that should be shown on the page
 -- && the list item index is <= the index of the last item
 that should be shown on the page, show it
 */
+const startIndex = (page * itemsPerPage) - itemsPerPage;
+const endIndex = (page * itemsPerPage) - 1;
+
+for (let i = 0; i < list.length; i += 1) {
+  if (i >= startIndex) {
+    if (i <= endIndex) {
+      list[i].style.display = '';
+    } else {
+      list[i].style.display = 'none';
+    }
+  }
 }
+};
 
-
-
-
-
-
-
+showPage(studentList, 1);
 
 /***
    Create the `appendPageLinks function` to generate, append, and add
@@ -60,29 +67,61 @@ that should be shown on the page, show it
 const appendPageLinks = (list) => {
 /*
 1. Determine how many pages are needed for the list by dividing the
-total number of list items by the max number of items per page
+total number of list items by the max number of items per page.
+*/
+const totalPages = Math.round((list.length / itemsPerPage) + 1);
+/*
 2. Create a div, give it the “pagination” class, and append it to the .page div
 */
-const div = document.createElement('div');
-div.appendChild(.page);
+const childDiv = document.createElement('div');
+//console.log(divPage);
+childDiv.className = "pagination";
+
+const parentDiv = document.createElement('page');
+//console.log(parentDiv);
+
 /*
 3. Add a ul to the “pagination” div to store the pagination links
+*/
+const pageLinks = document.createElement('ul');
 
+parentDiv.appendChild(childDiv);
+childDiv.appendChild(pageLinks);
 
+/*
 4. for every page, add li and a tags with the page number text
 */
+
+
+for (let i = 0; i < totalPages; i += 1) {
+  const li = document.createElement('li');
+  const a = document.createElement('a');
+  a.textContent = i;
+  a.href = '#'
+  li.appendChild(a);
+  pageLinks.appendChild(li);
+
+
+
+  li.addEventListener('click', (e) => {
+      const links = document.querySelectorAll('a');
+      const isClicked = event.target;
+      showPage(studentList, isClicked.textContent);
+  });
+}
+
+
 
 /*
 5. Add an event listener to each a tag. When they are clicked
 call the showPage function to display the appropriate page
 */
-(target).addEventListener('click');
+
 
 /*
 6. Loop over pagination links to remove active class from all links
 */
-for (let i = 0; i < languages.length; i += 1) {
-  let div = createDiv(languages[i]);
+
 
 
 /*
@@ -90,6 +129,8 @@ for (let i = 0; i < languages.length; i += 1) {
 clicked link using event.target
 */
 }
+
+appendPageLinks(studentList);
 
 
 
